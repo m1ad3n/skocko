@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
+#include <Windows.h>
 
-char symbols[5], used_symbols[4], comb[4], places[4], temp[4];
-int i, y, trys, count, key = 0x0, check;
+CHAR symbols[5], used_symbols[4], comb[4], places[4], temp[4];
+INT i, y, trys, count, key = 0x0, check;
 
-void key_check();
-int comb_check();
+VOID key_check();
+INT comb_check();
 
-int main()
+INT main()
 {
     srand(time(0));
 
@@ -41,9 +42,12 @@ int main()
 
         key = _getch();
     }
+
+    printf("\nPress any key to continue...");
+    _getch();
 }
 
-int comb_check()
+INT comb_check()
 {
     count = 0;
 
@@ -81,15 +85,22 @@ int comb_check()
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 1)
-            printf("\033[0;31m %c\033[0;37m", 254);
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+            printf(" %c", 254);
+        }
     }
 
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 2)
-            printf("\033[0;33m %c\033[0;37m", 254);
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+            printf(" %c", 254);
+        }
     }
 
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 0)
@@ -111,7 +122,7 @@ int comb_check()
 
     if (trys == 6)
     {
-        printf("\n\nYou lost\n Wanted Combination: ");
+        printf("\n\nYou lost\nWanted Combination: ");
 
         for (i = 0; i < 4; i++)
             printf("%c ", comb[i]);
@@ -125,7 +136,7 @@ int comb_check()
     return 0;
 }
 
-void key_check()
+VOID key_check()
 {
     if (key == 8)
     {
