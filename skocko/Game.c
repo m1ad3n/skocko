@@ -19,15 +19,11 @@ int main()
     symbols[3] = 5;
     symbols[4] = 6;
 
-    places[0] = 0;
-    places[1] = 0;
-    places[2] = 0;
-    places[3] = 0;
-
-    comb[0] = symbols[rand() % 5];
-    comb[1] = symbols[rand() % 5];
-    comb[2] = symbols[rand() % 5];
-    comb[3] = symbols[rand() % 5];
+    for (i = 0; i < 4; i++)
+    {
+        places[i] = 0;
+        comb[i] = symbols[rand() % 5];
+    }
 
     for (i = 2; i < 7; i++)
         printf("%c - %d\n", i, i - 1);
@@ -85,19 +81,19 @@ int comb_check()
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 1)
-            printf(" %c", 254);
+            printf("\033[0;31m %c\033[0;37m", 254);
     }
 
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 2)
-            printf(" %c", 178);
+            printf("\033[0;33m %c\033[0;37m", 254);
     }
 
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 0)
-            printf(" %c", 176);
+            printf(" %c", 254);
     }
 
     if (places[0] == places[1] && places[1] == places[2] && places[0] == places[3] && places[3] == 1)
@@ -106,8 +102,6 @@ int comb_check()
         return 1;
     }
 
-    printf("\n");
-
     places[0] = 0;
     places[1] = 0;
     places[2] = 0;
@@ -115,9 +109,9 @@ int comb_check()
 
     trys++;
 
-    if (trys == 4)
+    if (trys == 6)
     {
-        printf("\nYou lost\nWanted Combination: ");
+        printf("\n\nYou lost\n Wanted Combination: ");
 
         for (i = 0; i < 4; i++)
             printf("%c ", comb[i]);
@@ -126,12 +120,26 @@ int comb_check()
         return 2;
     }
 
+    printf("\n");
+
     return 0;
 }
 
 void key_check()
 {
-    if (key == 49)
+    if (key == 8)
+    {
+        if (count == 0) printf("%c", 7);
+        else
+        {
+            for (i = count; i < 4; i++)
+                printf("  ");
+            
+            printf("  CANCELLED\n");
+            count = 0;
+        }
+    }
+    else if (key == 49)
     {
         printf("%c ", symbols[0]);
         used_symbols[count] = symbols[0];
