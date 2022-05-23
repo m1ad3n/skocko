@@ -2,17 +2,24 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
-#include <Windows.h>
 
-CHAR symbols[5], used_symbols[4], comb[4], places[4], temp[4];
-INT i, y, trys, count, key = 0x0, check;
+#ifdef _WIN32
+    #include <Windows.h>
+#endif
 
-VOID key_check();
-INT comb_check();
+char symbols[5], used_symbols[4], comb[4], places[4], temp[4];
+int i, y, trys, count, key, check;
 
-INT main()
+void key_check();
+int comb_check();
+
+int main()
 {
     srand(time(0));
+
+    count = 0;
+    trys = 0;
+    key = 0x0;
 
     symbols[0] = 2;
     symbols[1] = 3;
@@ -30,7 +37,7 @@ INT main()
         printf("%c - %d\n", i, i - 1);
     printf("\n");
 
-    for ( ;; )
+    for (;; )
     {
         key_check();
 
@@ -43,11 +50,20 @@ INT main()
         key = _getch();
     }
 
-    printf("\nPress any key to continue...");
-    _getch();
+    printf("\nWanna play again [y/N] ");
+    if (_getch() == 'y')
+    {
+        #ifdef _WIN32
+            system("cls");
+        #elif defined(__linux__)
+            system("clear");
+        #endif
+        
+        main();
+    }
 }
 
-INT comb_check()
+int comb_check()
 {
     count = 0;
 
@@ -86,7 +102,12 @@ INT comb_check()
     {
         if (places[i] == 1)
         {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+            #ifdef _WIN32
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
+            #elif defined(__linux__)
+                printf("\033[0;31m");
+            #endif
+
             printf(" %c", 254);
         }
     }
@@ -95,12 +116,22 @@ INT comb_check()
     {
         if (places[i] == 2)
         {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+            #ifdef _WIN32
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+            #elif defined(__linux__)
+                printf("\033[0;31m");
+            #endif
+
             printf(" %c", 254);
         }
     }
 
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+    #ifdef _WIN32
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+    #elif defined(__linux__)
+        printf("\033[0;37m");
+    #endif
+
     for (i = 0; i < 4; i++)
     {
         if (places[i] == 0)
@@ -136,7 +167,7 @@ INT comb_check()
     return 0;
 }
 
-VOID key_check()
+void key_check()
 {
     if (key == 8)
     {
