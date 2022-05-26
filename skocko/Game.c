@@ -37,7 +37,7 @@ int main()
         printf("%c - %d\n", i, i - 1);
     printf("\n");
 
-    for (;; )
+    for ( ;; )
     {
         key_check();
 
@@ -119,7 +119,7 @@ int comb_check()
             #ifdef _WIN32
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
             #elif defined(__linux__)
-                printf("\033[0;31m");
+                printf("\033[0;33m");
             #endif
 
             printf(" %c", 254);
@@ -156,9 +156,15 @@ int comb_check()
         printf("\n\nYou lost\nWanted Combination: ");
 
         for (i = 0; i < 4; i++)
-            printf("%c ", comb[i]);
-        printf("\n");
+        {
+            #ifdef _WIN32
+                printf("%c ", comb[i]);
+            #elif defined(__linux__)
+                printf("%d ", comb[i]);
+            #endif
+        }
 
+        printf("\n");
         return 2;
     }
 
