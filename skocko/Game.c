@@ -21,11 +21,8 @@ int main()
     trys = 0;
     key = 0x0;
 
-    symbols[0] = 2;
-    symbols[1] = 3;
-    symbols[2] = 4;
-    symbols[3] = 5;
-    symbols[4] = 6;
+    for (i = 0; i < 5; i++)
+        symbols[i] = i + 2;
 
     for (i = 0; i < 4; i++)
     {
@@ -37,7 +34,7 @@ int main()
         printf("%c - %d\n", i, i - 1);
     printf("\n");
 
-    for ( ;; )
+    for ( ; key != 0x71 ; )
     {
         key_check();
 
@@ -49,17 +46,20 @@ int main()
 
         key = _getch();
     }
-
-    printf("\nWanna play again [y/N] ");
-    if (_getch() == 'y')
+       
+    if (key != 0x71)
     {
-        #ifdef _WIN32
-            system("cls");
-        #elif defined(__linux__)
-            system("clear");
-        #endif
-        
-        main();
+        printf("\nWanna play again [y/N] ");
+        if (_getch() == 'y')
+        {
+            #ifdef _WIN32
+                system("cls");
+            #elif defined(__linux__)
+                system("clear");
+            #endif
+
+            main();
+        }
     }
 }
 
@@ -67,10 +67,8 @@ int comb_check()
 {
     count = 0;
 
-    temp[0] = comb[0];
-    temp[1] = comb[1];
-    temp[2] = comb[2];
-    temp[3] = comb[3];
+    for (i = 0; i < 4; i++)
+        temp[i] = comb[i];
 
     for (i = 0; i < 4; i++)
     {
@@ -133,25 +131,22 @@ int comb_check()
     #endif
 
     for (i = 0; i < 4; i++)
-    {
         if (places[i] == 0)
             printf(" %c", 254);
-    }
 
-    if (places[0] == places[1] && places[1] == places[2] && places[0] == places[3] && places[3] == 1)
+    if (places[0] == places[1]
+        && places[1] == places[2]
+        && places[0] == places[3]
+        && places[3] == 1)
     {
         printf("\n\nYou won\n");
         return 1;
     }
 
-    places[0] = 0;
-    places[1] = 0;
-    places[2] = 0;
-    places[3] = 0;
+    for (i = 0; i < 4; i++)
+        places[i] = 0;
 
-    trys++;
-
-    if (trys == 6)
+    if (++trys == 6)
     {
         printf("\n\nYou lost\nWanted Combination: ");
 
@@ -169,7 +164,6 @@ int comb_check()
     }
 
     printf("\n");
-
     return 0;
 }
 
@@ -187,39 +181,9 @@ void key_check()
             count = 0;
         }
     }
-    else if (key == 49)
+    else if (key >= 49 && key <= 53)
     {
-        printf("%c ", symbols[0]);
-        used_symbols[count] = symbols[0];
-
-        count++;
-    }
-    else if (key == 50)
-    {
-        printf("%c ", symbols[1]);
-        used_symbols[count] = symbols[1];
-
-        count++;
-    }
-    else if (key == 51)
-    {
-        printf("%c ", symbols[2]);
-        used_symbols[count] = symbols[2];
-
-        count++;
-    }
-    else if (key == 52)
-    {
-        printf("%c ", symbols[3]);
-        used_symbols[count] = symbols[3];
-
-        count++;
-    }
-    else if (key == 53)
-    {
-        printf("%c ", symbols[4]);
-        used_symbols[count] = symbols[4];
-
-        count++;
+        printf("%c ", symbols[(int)key - 49]);
+        used_symbols[count++] = symbols[(int)key - 49];
     }
 }
